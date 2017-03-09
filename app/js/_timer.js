@@ -7,6 +7,7 @@ var timerModule = angular.module('timer', [])
         interval: '=interval',
         startTimeAttr: '=startTime',
         endTimeAttr: '=endTime',
+        timeNowAttr: '=timeNow',
         countdownattr: '=countdown',
         finishCallback: '&finishCallback',
         autoStart: '&autoStart',
@@ -117,6 +118,7 @@ var timerModule = angular.module('timer', [])
         $scope.start = function () {
           $scope.startTime = $scope.startTimeAttr ? moment($scope.startTimeAttr) : moment();
           $scope.endTime = $scope.endTimeAttr ? moment($scope.endTimeAttr) : null;
+          $scope.timeNow = $scope.timeNowAttr ? moment($scope.timeNowAttr) : null;
           if (!angular.isNumber($scope.countdown)) {
             $scope.countdown = angular.isNumber($scope.countdownattr) && parseInt($scope.countdownattr, 10) > 0 ? parseInt($scope.countdownattr, 10) : undefined;
           }
@@ -312,7 +314,11 @@ var timerModule = angular.module('timer', [])
 
           if ($scope.endTimeAttr) {
             typeTimer = $scope.endTimeAttr;
-            $scope.millis = moment($scope.endTime).diff(moment());
+            if ($scope.timeNowAttr) {
+              $scope.millis = moment($scope.endTime).diff(moment($scope.timeNow));
+            } else {
+              $scope.millis = moment($scope.endTime).diff(moment());
+            }
             adjustment = $scope.interval - $scope.millis % 1000;
           }
 
