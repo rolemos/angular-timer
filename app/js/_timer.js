@@ -7,7 +7,7 @@ var timerModule = angular.module('timer', [])
         interval: '=interval',
         startTimeAttr: '=startTime',
         endTimeAttr: '=endTime',
-        timeNowAttr: '=timeNow',
+        serverTimeNowAttr: '=serverTimeNow',
         countdownattr: '=countdown',
         finishCallback: '&finishCallback',
         autoStart: '&autoStart',
@@ -69,6 +69,8 @@ var timerModule = angular.module('timer', [])
 
         $scope.startTime = null;
         $scope.endTime = null;
+        $scope.serverTimeNow = null;
+        $scope.offsetServerTimeNow = null;
         $scope.timeoutId = null;
         $scope.countdown = angular.isNumber($scope.countdownattr) && parseInt($scope.countdownattr, 10) >= 0 ? parseInt($scope.countdownattr, 10) : undefined;
         $scope.isRunning = false;
@@ -118,7 +120,13 @@ var timerModule = angular.module('timer', [])
         $scope.start = function () {
           $scope.startTime = $scope.startTimeAttr ? moment($scope.startTimeAttr) : moment();
           $scope.endTime = $scope.endTimeAttr ? moment($scope.endTimeAttr) : null;
-          $scope.timeNow = $scope.timeNowAttr ? moment($scope.timeNowAttr) : null;
+          $scope.serverTimeNow = $scope.serverTimeNowAttr ? moment($scope.serverTimeNowAttr) : null;
+
+          if ($scope.serverTimeNowAttr) {
+            $scope.offsetServerTimeNow = moment().diff($scope.serverTimeNow);
+            console.log('$scope.offsetServerTimeNow', $scope.offsetServerTimeNow);
+          }
+
           if (!angular.isNumber($scope.countdown)) {
             $scope.countdown = angular.isNumber($scope.countdownattr) && parseInt($scope.countdownattr, 10) > 0 ? parseInt($scope.countdownattr, 10) : undefined;
           }
@@ -314,8 +322,8 @@ var timerModule = angular.module('timer', [])
 
           if ($scope.endTimeAttr) {
             typeTimer = $scope.endTimeAttr;
-            if ($scope.timeNowAttr) {
-              $scope.millis = moment($scope.endTime).diff(moment($scope.timeNow));
+            if ($scope.serverTimeNowAttr) {
+              $scope.millis = moment($scope.endTime).diff(moment().add($scope.offsetServerTimeNow));
             } else {
               $scope.millis = moment($scope.endTime).diff(moment());
             }
