@@ -1,5 +1,8 @@
 ##Change Log
 
+###Version 1.3.5
+* Fix to let set datetime now
+
 ###Version 1.3.1
 * Fix broken bower distribution
 
