@@ -6,7 +6,7 @@
   "description": "Angular-Timer : A simple AngularJS directive demonstrating re-usability & interoperability",
   "repository": {
     "type": "git",
-    "url": "git://github.com/siddii/angular-timer.git"
+    "url": "git://github.com/rolemos/angular-timer.git"
   },
   "dependencies": {
     "angular": ">= 1.0.7",
