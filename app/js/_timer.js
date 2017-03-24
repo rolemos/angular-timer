@@ -123,7 +123,7 @@ var timerModule = angular.module('timer', [])
           $scope.serverTimeNow = $scope.serverTimeNowAttr ? moment($scope.serverTimeNowAttr) : null;
 
           if ($scope.serverTimeNowAttr) {
-            $scope.offsetServerTimeNow = moment().diff($scope.serverTimeNow);
+            $scope.offsetServerTimeNow = moment($scope.serverTimeNow).diff(moment());
             console.log('$scope.offsetServerTimeNow', $scope.offsetServerTimeNow);
           }
 
@@ -323,7 +323,7 @@ var timerModule = angular.module('timer', [])
           if ($scope.endTimeAttr) {
             typeTimer = $scope.endTimeAttr;
             if ($scope.serverTimeNowAttr) {
-              $scope.millis = moment($scope.endTime).diff(moment().add($scope.offsetServerTimeNow));
+              $scope.millis = moment($scope.endTime).diff(moment().add($scope.offsetServerTimeNow), 'milliseconds');
             } else {
               $scope.millis = moment($scope.endTime).diff(moment());
             }
